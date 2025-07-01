@@ -18,16 +18,9 @@ const Footer: React.FC = () => {
       { name: 'Marketing', href: '#' }
     ],
     Support: [
-      { name: 'Help Center', href: '#' },
-      { name: 'Community', href: '#' },
-      { name: 'Contact Us', href: '#' },
-      { name: 'System Status', href: '#' }
     ],
     Legal: [
-      { name: 'Privacy Policy', href: '#' },
-      { name: 'Terms of Service', href: '#', onClick: () => setShowTerms(true) },
-      { name: 'Cookie Policy', href: '#' },
-      { name: 'Refund Policy', href: '#' }
+      { name: 'Terms of Service', href: '#', onClick: () => setShowTerms(true) }
     ]
   };
 
@@ -55,11 +48,11 @@ const Footer: React.FC = () => {
               <div className="space-y-3">
                 <div className="flex items-center space-x-3 text-gray-300">
                   <Mail className="h-5 w-5 text-blue-400" />
-                  <span>support@rankblaze.com</span>
+                  <span>aryanrajawat.2311@gmail.com</span>
                 </div>
                 <div className="flex items-center space-x-3 text-gray-300">
                   <Phone className="h-5 w-5 text-blue-400" />
-                  <span>+91 9876543210</span>
+                  <span>+91 9891474595</span>
                 </div>
                 <div className="flex items-center space-x-3 text-gray-300">
                   <MapPin className="h-5 w-5 text-blue-400" />

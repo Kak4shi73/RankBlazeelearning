@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { X, Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
 import { AuthModalProps } from '../types';
+import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, updateProfile } from 'firebase/auth';
+import { auth } from '../config/firebase';
 
 const SignupModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSwitchMode }) => {
   const [formData, setFormData] = useState({
@@ -54,12 +56,35 @@ const SignupModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSwitchMode }
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      // Handle signup logic here
-      console.log('Signup:', formData);
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+        await updateProfile(userCredential.user, {
+          displayName: formData.name
+        });
+        console.log('Signup successful');
+        onClose();
+      } catch (error: any) {
+        console.error('Signup error:', error.message);
+        if (error.code === 'auth/email-already-in-use') {
+          setErrors({ email: 'Email is already registered' });
+        } else {
+          setErrors({ email: 'Failed to create account' });
+        }
+      }
+    }
+  };
+
+  const handleGoogleSignup = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(auth, provider);
+      console.log('Google signup successful');
       onClose();
+    } catch (error: any) {
+      console.error('Google signup error:', error.message);
     }
   };
 
@@ -235,20 +260,14 @@ const SignupModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSwitchMode }
           </div>
 
           {/* Social Login */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="w-full">
             <button
               type="button"
-              className="flex items-center justify-center px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+              onClick={handleGoogleSignup}
+              className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200"
             >
               <img src="https://www.google.com/favicon.ico" alt="Google" className="h-5 w-5 mr-2" />
-              Google
-            </button>
-            <button
-              type="button"
-              className="flex items-center justify-center px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200"
-            >
-              <img src="https://github.com/favicon.ico" alt="GitHub" className="h-5 w-5 mr-2" />
-              GitHub
+              Continue with Google
             </button>
           </div>
 

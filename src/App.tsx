@@ -5,6 +5,7 @@ import LoginModal from './components/LoginModal';
 import SignupModal from './components/SignupModal';
 import Home from './pages/Home';
 import CoursePage from './pages/CoursePage';
+import { AuthProvider } from './contexts/AuthContext';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -67,32 +68,34 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      <Header
-        onLoginClick={() => setIsLoginModalOpen(true)}
-        onSignupClick={() => setIsSignupModalOpen(true)}
-        currentPage={currentPage}
-        onPageChange={setCurrentPage}
-      />
-      
-      <main>
-        {renderCurrentPage()}
-      </main>
-      
-      <Footer />
+    <AuthProvider>
+      <div className="min-h-screen bg-white">
+        <Header
+          onLoginClick={() => setIsLoginModalOpen(true)}
+          onSignupClick={() => setIsSignupModalOpen(true)}
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+        />
+        
+        <main>
+          {renderCurrentPage()}
+        </main>
+        
+        <Footer />
 
-      <LoginModal
-        isOpen={isLoginModalOpen}
-        onClose={() => setIsLoginModalOpen(false)}
-        onSwitchMode={handleSwitchToSignup}
-      />
+        <LoginModal
+          isOpen={isLoginModalOpen}
+          onClose={() => setIsLoginModalOpen(false)}
+          onSwitchMode={handleSwitchToSignup}
+        />
 
-      <SignupModal
-        isOpen={isSignupModalOpen}
-        onClose={() => setIsSignupModalOpen(false)}
-        onSwitchMode={handleSwitchToLogin}
-      />
-    </div>
+        <SignupModal
+          isOpen={isSignupModalOpen}
+          onClose={() => setIsSignupModalOpen(false)}
+          onSwitchMode={handleSwitchToLogin}
+        />
+      </div>
+    </AuthProvider>
   );
 }
 

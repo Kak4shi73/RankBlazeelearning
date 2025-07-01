@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { X, Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
 import { AuthModalProps } from '../types';
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { auth } from '../config/firebase';
 
 const LoginModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSwitchMode }) => {
   const [email, setEmail] = useState('');
@@ -27,12 +29,28 @@ const LoginModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSwitchMode })
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      // Handle login logic here
-      console.log('Login:', { email, password });
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        console.log('Login successful');
+        onClose();
+      } catch (error: any) {
+        console.error('Login error:', error.message);
+        setErrors({ email: 'Invalid email or password' });
+      }
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(auth, provider);
+      console.log('Google login successful');
       onClose();
+    } catch (error: any) {
+      console.error('Google login error:', error.message);
     }
   };
 
@@ -143,20 +161,14 @@ const LoginModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSwitchMode })
           </div>
 
           {/* Social Login */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="w-full">
             <button
               type="button"
-              className="flex items-center justify-center px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+              onClick={handleGoogleLogin}
+              className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200"
             >
               <img src="https://www.google.com/favicon.ico" alt="Google" className="h-5 w-5 mr-2" />
-              Google
-            </button>
-            <button
-              type="button"
-              className="flex items-center justify-center px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200"
-            >
-              <img src="https://github.com/favicon.ico" alt="GitHub" className="h-5 w-5 mr-2" />
-              GitHub
+              Continue with Google
             </button>
           </div>
 
