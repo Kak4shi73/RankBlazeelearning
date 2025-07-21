@@ -56,7 +56,7 @@ const Footer: React.FC = () => {
                 </div>
                 <div className="flex items-center space-x-3 text-gray-300">
                   <MapPin className="h-5 w-5 text-blue-400" />
-                  <span>Faridabad, Haryana, India</span>
+                  <span>Gate band colony, pincode 209726, district Kannauj</span>
                 </div>
               </div>
             </div>
@@ -105,7 +105,7 @@ const Footer: React.FC = () => {
           <div className="border-t border-gray-800 pt-8 mt-8">
             <div className="text-center">
               <div className="text-gray-300 text-sm">
-                © 2024 RankBlaze. All rights reserved. Owned by DHARMENDER SINGH.
+                © 2024 RankBlaze. All rights reserved. Owned by Kiran Devi.
               </div>
             </div>
           </div>
@@ -131,7 +131,7 @@ const Footer: React.FC = () => {
             <div className="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
               <div className="prose max-w-none">
                 <p className="text-gray-600 mb-4">
-                  For the purpose of these Terms and Conditions, The term "we", "us", "our" used anywhere on this page shall mean DHARMENDER SINGH, whose registered/operational office is Sarai khwaja mair market Faridabad Faridabad HARYANA 121003. "you", "your", "user", "visitor" shall mean any natural or legal person who is visiting our website and/or agreed to purchase from us.
+                  For the purpose of these Terms and Conditions, The term "we", "us", "our" used anywhere on this page shall mean Kiran Devi, whose registered/operational office is Gate band colony, pincode 209726, district Kannauj. "you", "your", "user", "visitor" shall mean any natural or legal person who is visiting our website and/or agreed to purchase from us.
                 </p>
                 
                 <p className="text-gray-600 mb-4">
@@ -153,7 +153,7 @@ const Footer: React.FC = () => {
                   
                   <p>• From time to time our website may also include links to other websites. These links are provided for your convenience to provide further information.</p>
                   
-                  <p>• You may not create a link to our website from another website or document without DHARMENDER SINGH's prior written consent.</p>
+                  <p>• You may not create a link to our website from another website or document without Kiran Devi's prior written consent.</p>
                   
                   <p>• Any dispute arising out of use of our website and/or purchase with us and/or any engagement with us is subject to the laws of India.</p>
                   
