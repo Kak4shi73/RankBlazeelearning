@@ -66,9 +66,10 @@ const SignupModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSwitchMode }
         });
         console.log('Signup successful');
         onClose();
-      } catch (error: any) {
-        console.error('Signup error:', error.message);
-        if (error.code === 'auth/email-already-in-use') {
+      } catch (error) {
+        console.error('Signup error:', error);
+        const firebaseError = error as { code?: string };
+        if (firebaseError.code === 'auth/email-already-in-use') {
           setErrors({ email: 'Email is already registered' });
         } else {
           setErrors({ email: 'Failed to create account' });
@@ -83,8 +84,8 @@ const SignupModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSwitchMode }
       await signInWithPopup(auth, provider);
       console.log('Google signup successful');
       onClose();
-    } catch (error: any) {
-      console.error('Google signup error:', error.message);
+    } catch (error) {
+      console.error('Google signup error:', error);
     }
   };
 

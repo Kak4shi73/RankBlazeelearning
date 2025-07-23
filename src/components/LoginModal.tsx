@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
+import { X, Eye, EyeOff, Mail, Lock } from 'lucide-react';
 import { AuthModalProps } from '../types';
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { auth } from '../config/firebase';
@@ -36,8 +36,8 @@ const LoginModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSwitchMode })
         await signInWithEmailAndPassword(auth, email, password);
         console.log('Login successful');
         onClose();
-      } catch (error: any) {
-        console.error('Login error:', error.message);
+      } catch (error) {
+        console.error('Login error:', error);
         setErrors({ email: 'Invalid email or password' });
       }
     }
@@ -49,8 +49,8 @@ const LoginModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSwitchMode })
       await signInWithPopup(auth, provider);
       console.log('Google login successful');
       onClose();
-    } catch (error: any) {
-      console.error('Google login error:', error.message);
+    } catch (error) {
+      console.error('Google login error:', error);
     }
   };
 
