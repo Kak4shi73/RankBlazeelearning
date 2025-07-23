@@ -11,8 +11,7 @@ interface HomeProps {
 
 const Home: React.FC<HomeProps> = ({ onGetStarted, onViewCourses }) => {
   const handleEnrollCourse = (courseId: string) => {
-    console.log('Enrolling in course:', courseId);
-    // Handle course enrollment logic
+    console.log('Course added to cart:', courseId);
   };
 
   return (

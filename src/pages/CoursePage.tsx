@@ -22,8 +22,7 @@ const CoursePage: React.FC = () => {
   ];
 
   const handleEnrollCourse = (courseId: string) => {
-    console.log('Enrolling in course:', courseId);
-    // Handle course enrollment logic
+    console.log('Course added to cart:', courseId);
   };
 
   const filteredCourses = featuredCourses.filter((course: Course) => {

@@ -21,9 +21,18 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+
+// Initialize Analytics only in browser and production
+let analytics;
+if (typeof window !== 'undefined' && firebaseConfig.measurementId) {
+  analytics = getAnalytics(app);
+}
+
 const auth = getAuth(app);
 const db = getFirestore(app);
+
+// Enable persistence for auth
+auth.useDeviceLanguage();
 
 export { auth, db, analytics };
 export default app;

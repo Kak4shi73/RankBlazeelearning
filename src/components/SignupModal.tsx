@@ -68,12 +68,30 @@ const SignupModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSwitchMode }
         onClose();
       } catch (error) {
         console.error('Signup error:', error);
-        const firebaseError = error as { code?: string };
-        if (firebaseError.code === 'auth/email-already-in-use') {
-          setErrors({ email: 'Email is already registered' });
-        } else {
-          setErrors({ email: 'Failed to create account' });
+        const firebaseError = error as { code?: string; message?: string };
+        let errorMessage = 'Failed to create account';
+        
+        switch (firebaseError.code) {
+          case 'auth/email-already-in-use':
+            errorMessage = 'Email is already registered';
+            break;
+          case 'auth/invalid-email':
+            errorMessage = 'Invalid email address';
+            break;
+          case 'auth/weak-password':
+            errorMessage = 'Password is too weak. Please use at least 6 characters';
+            break;
+          case 'auth/network-request-failed':
+            errorMessage = 'Network error. Please check your connection';
+            break;
+          case 'auth/too-many-requests':
+            errorMessage = 'Too many requests. Please try again later';
+            break;
+          default:
+            errorMessage = firebaseError.message || 'Failed to create account. Please try again';
         }
+        
+        setErrors({ email: errorMessage });
       }
     }
   };
@@ -86,6 +104,27 @@ const SignupModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSwitchMode }
       onClose();
     } catch (error) {
       console.error('Google signup error:', error);
+      const firebaseError = error as { code?: string; message?: string };
+      let errorMessage = 'Google signup failed';
+      
+      switch (firebaseError.code) {
+        case 'auth/popup-closed-by-user':
+          errorMessage = 'Signup was cancelled';
+          break;
+        case 'auth/popup-blocked':
+          errorMessage = 'Popup was blocked. Please allow popups for this site';
+          break;
+        case 'auth/account-exists-with-different-credential':
+          errorMessage = 'Account already exists with different sign-in method';
+          break;
+        case 'auth/network-request-failed':
+          errorMessage = 'Network error. Please check your connection';
+          break;
+        default:
+          errorMessage = firebaseError.message || 'Google signup failed. Please try again';
+      }
+      
+      setErrors({ email: errorMessage });
     }
   };
 

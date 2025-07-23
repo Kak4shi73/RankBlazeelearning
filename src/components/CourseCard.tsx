@@ -1,13 +1,25 @@
 import React from 'react';
-import { Star, Clock, Users, BookOpen, Play } from 'lucide-react';
+import { Star, Clock, Users, BookOpen, Play, ShoppingCart, Check } from 'lucide-react';
 import { Course } from '../types';
+import { useCart } from '../contexts/CartContext';
 
 interface CourseCardProps {
   course: Course;
-  onEnroll: (courseId: string) => void;
+  onEnroll?: (courseId: string) => void;
 }
 
 const CourseCard: React.FC<CourseCardProps> = ({ course, onEnroll }) => {
+  const { addToCart, isInCart } = useCart();
+  const inCart = isInCart(course.id);
+
+  const handleEnrollClick = () => {
+    if (!inCart) {
+      addToCart(course.id);
+    }
+    if (onEnroll) {
+      onEnroll(course.id);
+    }
+  };
   return (
     <div className="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 hover:-translate-y-1">
       {/* Course Image */}
@@ -120,10 +132,24 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onEnroll }) => {
           </div>
           
           <button
-            onClick={() => onEnroll(course.id)}
-            className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-md hover:shadow-lg"
+            onClick={handleEnrollClick}
+            className={`px-6 py-2 rounded-lg font-medium transition-all duration-200 shadow-md hover:shadow-lg flex items-center gap-2 ${
+              inCart
+                ? 'bg-green-600 text-white hover:bg-green-700'
+                : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700'
+            }`}
           >
-            Enroll Now
+            {inCart ? (
+              <>
+                <Check className="h-4 w-4" />
+                Added to Cart
+              </>
+            ) : (
+              <>
+                <ShoppingCart className="h-4 w-4" />
+                Add to Cart
+              </>
+            )}
           </button>
         </div>
       </div>

@@ -1,18 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { BookOpen, Menu, X, User, Search, LogOut, ChevronDown } from 'lucide-react';
+import { BookOpen, Menu, X, User, Search, LogOut, ChevronDown, ShoppingCart } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { useCart } from '../contexts/CartContext';
 
 interface HeaderProps {
   onLoginClick: () => void;
   onSignupClick: () => void;
+  onCartClick: () => void;
   currentPage: string;
   onPageChange: (page: string) => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ onLoginClick, onSignupClick, currentPage, onPageChange }) => {
+const Header: React.FC<HeaderProps> = ({ onLoginClick, onSignupClick, onCartClick, currentPage, onPageChange }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const { currentUser, logout } = useAuth();
+  const { cartCount } = useCart();
   const userMenuRef = useRef<HTMLDivElement>(null);
 
   const handleLogout = async () => {
@@ -91,8 +94,21 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick, onSignupClick, currentPag
             </div>
           </div>
 
-          {/* Auth Buttons - Desktop */}
+          {/* Cart and Auth Buttons - Desktop */}
           <div className="hidden md:flex items-center space-x-4">
+            {/* Cart Button */}
+            <button
+              onClick={onCartClick}
+              className="relative p-2 text-gray-700 hover:text-blue-600 transition-colors duration-200"
+            >
+              <ShoppingCart className="h-6 w-6" />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium">
+                  {cartCount}
+                </span>
+              )}
+            </button>
+
             {currentUser ? (
               <div className="relative" ref={userMenuRef}>
                 <button
@@ -186,6 +202,20 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick, onSignupClick, currentPag
                   {item.label}
                 </button>
               ))}
+            </div>
+
+            {/* Mobile Cart Button */}
+            <div className="mt-4 px-4">
+              <button
+                onClick={() => {
+                  onCartClick();
+                  setIsMobileMenuOpen(false);
+                }}
+                className="w-full flex items-center justify-center space-x-2 py-2 px-4 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+              >
+                <ShoppingCart className="h-5 w-5" />
+                <span>Cart ({cartCount})</span>
+              </button>
             </div>
 
             {/* Mobile Auth Buttons */}

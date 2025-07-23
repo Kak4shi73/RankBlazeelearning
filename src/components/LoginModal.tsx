@@ -38,7 +38,33 @@ const LoginModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSwitchMode })
         onClose();
       } catch (error) {
         console.error('Login error:', error);
-        setErrors({ email: 'Invalid email or password' });
+        const firebaseError = error as { code?: string; message?: string };
+        let errorMessage = 'Invalid email or password';
+        
+        switch (firebaseError.code) {
+          case 'auth/user-not-found':
+            errorMessage = 'No account found with this email';
+            break;
+          case 'auth/wrong-password':
+            errorMessage = 'Incorrect password';
+            break;
+          case 'auth/invalid-email':
+            errorMessage = 'Invalid email address';
+            break;
+          case 'auth/user-disabled':
+            errorMessage = 'This account has been disabled';
+            break;
+          case 'auth/too-many-requests':
+            errorMessage = 'Too many failed attempts. Please try again later';
+            break;
+          case 'auth/network-request-failed':
+            errorMessage = 'Network error. Please check your connection';
+            break;
+          default:
+            errorMessage = firebaseError.message || 'Login failed. Please try again';
+        }
+        
+        setErrors({ email: errorMessage });
       }
     }
   };
@@ -51,6 +77,24 @@ const LoginModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSwitchMode })
       onClose();
     } catch (error) {
       console.error('Google login error:', error);
+      const firebaseError = error as { code?: string; message?: string };
+      let errorMessage = 'Google login failed';
+      
+      switch (firebaseError.code) {
+        case 'auth/popup-closed-by-user':
+          errorMessage = 'Login was cancelled';
+          break;
+        case 'auth/popup-blocked':
+          errorMessage = 'Popup was blocked. Please allow popups for this site';
+          break;
+        case 'auth/network-request-failed':
+          errorMessage = 'Network error. Please check your connection';
+          break;
+        default:
+          errorMessage = firebaseError.message || 'Google login failed. Please try again';
+      }
+      
+      setErrors({ email: errorMessage });
     }
   };
 

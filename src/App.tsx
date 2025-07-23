@@ -3,14 +3,18 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import LoginModal from './components/LoginModal';
 import SignupModal from './components/SignupModal';
+import CartModal from './components/CartModal';
+import AuthDebug from './components/AuthDebug';
 import Home from './pages/Home';
 import CoursePage from './pages/CoursePage';
 import { AuthProvider } from './contexts/AuthContext';
+import { CartProvider } from './contexts/CartContext';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isSignupModalOpen, setIsSignupModalOpen] = useState(false);
+  const [isCartModalOpen, setIsCartModalOpen] = useState(false);
 
   const handleGetStarted = () => {
     setIsSignupModalOpen(true);
@@ -69,13 +73,15 @@ function App() {
 
   return (
     <AuthProvider>
-      <div className="min-h-screen bg-white">
-        <Header
-          onLoginClick={() => setIsLoginModalOpen(true)}
-          onSignupClick={() => setIsSignupModalOpen(true)}
-          currentPage={currentPage}
-          onPageChange={setCurrentPage}
-        />
+      <CartProvider>
+        <div className="min-h-screen bg-white">
+          <Header
+            onLoginClick={() => setIsLoginModalOpen(true)}
+            onSignupClick={() => setIsSignupModalOpen(true)}
+            onCartClick={() => setIsCartModalOpen(true)}
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
+          />
         
         <main>
           {renderCurrentPage()}
@@ -94,7 +100,16 @@ function App() {
           onClose={() => setIsSignupModalOpen(false)}
           onSwitchMode={handleSwitchToLogin}
         />
-      </div>
+
+        <CartModal
+          isOpen={isCartModalOpen}
+          onClose={() => setIsCartModalOpen(false)}
+        />
+
+        {/* Debug component - remove in production */}
+        {process.env.NODE_ENV === 'development' && <AuthDebug />}
+        </div>
+      </CartProvider>
     </AuthProvider>
   );
 }
