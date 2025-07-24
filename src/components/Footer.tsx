@@ -107,6 +107,9 @@ const Footer: React.FC = () => {
               <div className="text-gray-300 text-sm">
                 © 2024 RankBlaze. All rights reserved. Owned by Kiran Devi.
               </div>
+              <div className="text-gray-400 text-xs mt-1">
+                Legal name: Kiran devi
+              </div>
             </div>
           </div>
         </div>
