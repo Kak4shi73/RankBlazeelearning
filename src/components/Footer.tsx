@@ -36,7 +36,7 @@ const Footer: React.FC = () => {
                   <BookOpen className="h-6 w-6 text-white" />
                 </div>
                 <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                  RankBlaze
+                  RankBlaze ✨
                 </span>
               </div>
               
@@ -66,10 +66,10 @@ const Footer: React.FC = () => {
               <div key={title}>
                 <h3 className="text-lg font-semibold mb-6">{title}</h3>
                 <ul className="space-y-3">
-                  {links.map((link) => (
+                  {links.map((link: any) => (
                     <li key={link.name}>
                       <button
-                        onClick={link.onClick}
+                        {...(link.onClick ? { onClick: link.onClick } : {})}
                         className="text-gray-300 hover:text-white transition-colors duration-200 text-left"
                       >
                         {link.name}
